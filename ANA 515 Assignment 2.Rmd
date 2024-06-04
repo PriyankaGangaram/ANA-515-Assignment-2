@@ -1,0 +1,149 @@
+---
+title: "ANA 515 Assignment 2"
+author: "PRIYANKA RAMESH GANGARAM"
+date: "04 June 2024"
+output: 
+  html_document:
+    theme: 
+      bootswatch: materia
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data Description
+
+The dataset I select for this exercise is the FiveThirtyEight Airline Safety Data. The dataset can be found at this URL. The dataset contains airline safety records across different periods for multiple airlines. The dataset essentially provides the number of incidents, fatal accidents, and deaths for each of the airlines—thus constituting very rich airline safety data.
+
+## Content and Collection
+
+The data was gathered by FiveThirtyEight from available reports by the aviation authorities and organizations. It includes the following measures:
+
+-   incidents, 1985–1999
+-   fatal accidents, 1985–1999
+-   fatalities, 1985–1999
+-   incidents, 2000–2014
+-   fatal accidents, 2000–2014
+-   fatalities, 2000–2014
+-   available seat kilometers flown for every week by each airline
+
+## Research Questions
+
+One can ask several questions relating to airline safety with this dataset, some of which are listed below:
+
+1.  How have airlines' safety records changed over time?
+2.  Are there any airlines having significantly higher or lower incident rates compared to others?
+3.  What is the relationship between the number of incidents and fatal accidents per airline?
+
+## Format
+
+The format of the dataset is in a CSV file, a flat file whose data is separated by commas. It can be imported into most software like Rstudio for data processing and analysis
+
+# Reading the data
+
+```{r, echo=TRUE}
+# I have used the read_csv() function from the readr package to read the datarary
+library(readr)
+
+# Read the data from the provided URL
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv"
+airline_safety <- read_csv(url)
+
+# Display the first few rows of the dataframe
+head(airline_safety)
+```
+
+# Cleaning the data
+
+I will clean the data by renaming columns and ensuring the data is in the appropriate format. This will be done using functions from the dplyr package.
+
+```{r, echo=TRUE}
+# I have used the rename function from the dplyr package to rename the columns for better readability.
+library(dplyr)
+
+# Rename columns for better readability
+airline_safety <- airline_safety %>%
+  rename(
+    airline_name = airline,
+    weekly_seat_km = avail_seat_km_per_week,
+    incidents_85_99 = incidents_85_99,
+    fatal_accidents_85_99 = fatal_accidents_85_99,
+    fatalities_85_99 = fatalities_85_99,
+    incidents_00_14 = incidents_00_14,
+    fatal_accidents_00_14 = fatal_accidents_00_14,
+    fatalities_00_14 = fatalities_00_14
+  )
+
+# Display the cleaned dataframe
+head(airline_safety)
+
+```
+
+# Characteristics of the Data
+
+```{r, echo=TRUE}
+# Load the knitr library
+library(knitr)
+
+# Inline code to display the number of rows and columns
+num_rows <- nrow(airline_safety)
+num_cols <- ncol(airline_safety)
+```
+
+This dataframe has `r num_rows` rows and `r num_cols` columns. The names of the columns and a brief description of each are in the table below:
+
+```{r, echo=TRUE}
+# Create a dataframe for the column descriptions
+columns_summary <- data.frame(
+  Columns = colnames(airline_safety),
+  Description = c(
+    "Name of the airline",
+    "Available seat kilometers flown every week",
+    "Total number of incidents, 1985–1999",
+    "Total number of fatal accidents, 1985–1999",
+    "Total number of fatalities, 1985–1999",
+    "Total number of incidents, 2000–2014",
+    "Total number of fatal accidents, 2000–2014",
+    "Total number of fatalities, 2000–2014"
+  )
+)
+
+# Display the table using kable
+kable(columns_summary, caption = "Column Names and Descriptions")
+```
+# Summary Statistics
+I have picked three columns from the dataframe, created a subset, and used summary functions to get the minimum, maximum, mean, and number of missing values for these columns.
+
+
+```{r, echo=TRUE}
+# Load the dplyr library
+library(dplyr)
+
+# Create a subset of the dataframe with three columns
+airline_subset <- select(airline_safety, incidents_85_99, fatal_accidents_85_99, fatalities_85_99)
+
+# Calculate summary statistics for the subset
+summary_stats <- airline_subset %>%
+  summarise(
+    min_incidents = min(incidents_85_99, na.rm = TRUE),
+    max_incidents = max(incidents_85_99, na.rm = TRUE),
+    mean_incidents = mean(incidents_85_99, na.rm = TRUE),
+    missing_incidents = sum(is.na(incidents_85_99)),
+    min_fatal_accidents = min(fatal_accidents_85_99, na.rm = TRUE),
+    max_fatal_accidents = max(fatal_accidents_85_99, na.rm = TRUE),
+    mean_fatal_accidents = mean(fatal_accidents_85_99, na.rm = TRUE),
+    missing_fatal_accidents = sum(is.na(fatal_accidents_85_99)),
+    min_fatalities = min(fatalities_85_99, na.rm = TRUE),
+    max_fatalities = max(fatalities_85_99, na.rm = TRUE),
+    mean_fatalities = mean(fatalities_85_99, na.rm = TRUE),
+    missing_fatalities = sum(is.na(fatalities_85_99))
+  )
+
+# Assign the result to a new object
+summary_stats <- summary_stats
+
+# Display the summary statistics
+summary_stats
+
+```
