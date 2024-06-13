@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Data Description
 
-The dataset I select for this exercise is the FiveThirtyEight Airline Safety Data. The dataset can be found at this URL. The dataset contains airline safety records across different periods for multiple airlines. The dataset essentially provides the number of incidents, fatal accidents, and deaths for each of the airlines—thus constituting very rich airline safety data.
+The dataset I select for this exercise is the FiveThirtyEight Airline Safety Data. The dataset can be found at this URL: <https://raw.githubusercontent.com/fivethirtyeight/data/master/airline-safety/airline-safety.csv>. The dataset contains airline safety records across different periods for multiple airlines. The dataset essentially provides the number of incidents, fatal accidents, and deaths for each of the airlines—thus constituting very rich airline safety data.
 
 ## Content and Collection
 
@@ -112,9 +112,10 @@ columns_summary <- data.frame(
 # Display the table using kable
 kable(columns_summary, caption = "Column Names and Descriptions")
 ```
-# Summary Statistics
-I have picked three columns from the dataframe, created a subset, and used summary functions to get the minimum, maximum, mean, and number of missing values for these columns.
 
+# Summary Statistics
+
+I have picked three columns from the dataframe, created a subset, and used summary functions to get the minimum, maximum, mean, and number of missing values for these columns.
 
 ```{r, echo=TRUE}
 # Load the dplyr library
